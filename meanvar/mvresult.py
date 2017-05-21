@@ -89,9 +89,9 @@ class MVResult(object):
             for var in ["Intercept","Geno"] + self.covar_labels:
                 for t in ["mean", "mean_stder", "mean_pval", "var", "var_stder", "var_pval"]:
                     header.append("%s_%s" % (var.lower(), t))
-            print >> f, "\t".join(header)
+            print("\t".join(header), file=f)
         else:
-            print >> f, "\t".join([
+            print("\t".join([
                 "Chr",
                 "Pos",
                 "RSID",
@@ -107,7 +107,7 @@ class MVResult(object):
                 "geno_var",
                 "geno_var_stderr",
                 "geno_var_pval",
-            ])
+            ]), file=f)
 
 
     def stringify(self, value):
@@ -144,10 +144,10 @@ class MVResult(object):
                 results.append(self.stringify(self.betas[i+var_count]))
                 results.append(self.stringify(self.beta_stderr[i+var_count]))
                 results.append(self.stringify(self.beta_pvalues[i+var_count]))
-            print >> f, "\t".join([str(x) for x in results])
+            print("\t".join([str(x) for x in results]), file=f)
 
         else:
-            print >> f, "\t".join(str(x) for x in [
+            print("\t".join(str(x) for x in [
                 self.chr,
                 self.pos,
                 self.rsid,
@@ -163,6 +163,6 @@ class MVResult(object):
                 "%.3e" % self.betas[1+var_count],
                 self.stringify(self.beta_stderr[1+var_count]),
                 "%.3e" % self.beta_pvalues[1+var_count],
-            ])
+            ]), file=f)
 
 

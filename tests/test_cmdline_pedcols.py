@@ -8,7 +8,7 @@ if "DEBUG" in sys.argv:
     sys.path.insert(0, ".")
     sys.argv.remove("DEBUG")
 
-import test_pedigree_parser as test_pedigree_parser
+from . import test_pedigree_parser as test_pedigree_parser
 
 from libgwas.data_parser import DataParser
 from libgwas.pheno_covar import PhenoCovar

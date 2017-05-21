@@ -11,10 +11,10 @@ import numpy
 import os
 import mvtest
 import unittest
-import test_analyze_tped
-import test_analyze_ped
-import test_pedigree_parser as test_pedigree_parser
-import test_transped_parser as test_transped_parser
+from . import test_analyze_tped
+from . import test_analyze_ped
+from . import test_pedigree_parser as test_pedigree_parser
+from . import test_transped_parser as test_transped_parser
 from meanvar import mv_esteq
 from libgwas.boundary import BoundaryCheck
 from libgwas.data_parser  import DataParser
@@ -64,8 +64,8 @@ class TestCmdlineTPed(test_analyze_tped.TestBase):
 
     def testTPedCmdLineWithExcludeFile(self):
         file = open("__exclusions", "w")
-        missing = ["%s:%s" % (i, i) for i in xrange(0, 500)]
-        file.write("\n".join(["%s %s" % (i, i) for i in xrange(0, 500)]))
+        missing = ["%s:%s" % (i, i) for i in range(0, 500)]
+        file.write("\n".join(["%s %s" % (i, i) for i in range(0, 500)]))
         file.close()
         cmds = "--tfile %s --remove __exclusions" % (self.tfam_filename.split(".")[0])
 
@@ -81,7 +81,7 @@ class TestCmdlineTPed(test_analyze_tped.TestBase):
         os.remove("__exclusions")
 
     def testTPedCmdLineWithExclude(self):
-        missing = ["%s:%s" % (i, i) for i in xrange(0, 500)]
+        missing = ["%s:%s" % (i, i) for i in range(0, 500)]
         cmds = "--tfile %s --remove %s" % (self.tfam_filename.split(".")[0], ",".join(missing))
 
         app = mvtest.MVTestApplication()

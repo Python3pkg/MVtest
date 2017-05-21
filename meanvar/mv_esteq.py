@@ -6,9 +6,9 @@ import scipy.stats
 import math
 import exceptions
 
-from simple_timer import SimpleTimer
+from .simple_timer import SimpleTimer
 from libgwas.data_parser import DataParser
-from mvresult import MVResult
+from .mvresult import MVResult
 from libgwas.exceptions import UnsolvedLocus
 from libgwas.exceptions import NanInResult
 import libgwas.pheno_covar
@@ -79,7 +79,7 @@ def MeanVarEstEQ(y, x, covariates, tol=1e-8):
 
         """
         if len(y.shape) != 1:
-            print >> sys.stderr, "You can't pass an array of shape %s to dot_diag" % (y.shape)
+            print("You can't pass an array of shape %s to dot_diag" % (y.shape), file=sys.stderr)
             sys.exit(1)
 
         result = numpy.empty(x.shape)
@@ -169,7 +169,7 @@ def MeanVarEstEQ(y, x, covariates, tol=1e-8):
             mod, iterations = MVsolve(theta)
             total_iterations += iterations
             if i > 0.05:
-                print >> sys.stderr, "Completed: ", total_iterations, itr
+                print("Completed: ", total_iterations, itr, file=sys.stderr)
             break
         except exceptions.ValueError as e:
             pass
@@ -297,7 +297,7 @@ def RunAnalysis(dataset, pheno_covar):
                 result.bvar = estimates[pcount:]
                 yield result
             except NanInResult as e:
-                print >> sys.stderr, "\t".join([str(x) for x in [
+                print("\t".join([str(x) for x in [
                                 snp.chr,
                                 snp.pos,
                                 snp.rsid,
@@ -307,9 +307,9 @@ def RunAnalysis(dataset, pheno_covar):
                                 snp.minor_allele,
                                 snp.allele_count2,
                                 "NAN-Found",
-                                "MAF=%0.4f" % (snp.maf)]])
+                                "MAF=%0.4f" % (snp.maf)]]), file=sys.stderr)
             except ValueError as e:
-                print >> sys.stderr, "\t".join([str(x) for x in [
+                print("\t".join([str(x) for x in [
                                 snp.chr,
                                 snp.pos,
                                 snp.rsid,
@@ -319,9 +319,9 @@ def RunAnalysis(dataset, pheno_covar):
                                 snp.minor_allele,
                                 snp.allele_count2,
                                 "Unsolvable",
-                                "MAF=%0.4f" % (snp.maf)]])
+                                "MAF=%0.4f" % (snp.maf)]]), file=sys.stderr)
             except UnsolvedLocus as e:
-                print >> sys.stderr, "\t".join([str(x) for x in [
+                print("\t".join([str(x) for x in [
                                 snp.chr,
                                 snp.pos,
                                 snp.rsid,
@@ -331,8 +331,8 @@ def RunAnalysis(dataset, pheno_covar):
                                 snp.minor_allele,
                                 snp.allele_count2,
                                 "Unsolved",
-                                "MAF=%0.4f" % (snp.maf)]])
+                                "MAF=%0.4f" % (snp.maf)]]), file=sys.stderr)
                 unsolved.append(snp)
     if len(unsolved)>0:
-        print >> sys.stderr, "Total unsolvable loci: ", len(unsolved)
+        print("Total unsolvable loci: ", len(unsolved), file=sys.stderr)
 

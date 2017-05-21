@@ -532,7 +532,7 @@ class TestPedFiles(TestBase):
         mapdata = [x.strip().split() for x in open(self.map_filename).readlines()]
 
         index = 0
-        snp = ped_parser.__iter__().next()
+        snp = next(ped_parser.__iter__())
         try:
             while True:
                 self.assertEqual(int(mapdata[index][0]), snp.chr)
@@ -540,7 +540,7 @@ class TestPedFiles(TestBase):
                 self.assertEqual(mapdata[index][1], snp.rsid)
                 self.assertEqual(self.genotypes[index], list(snp.genotype_data))
                 index += 1
-                snp.next()
+                next(snp)
 
         except StopIteration:
             pass

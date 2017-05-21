@@ -31,7 +31,7 @@ class SimpleTimer:
         When true, do_reset will result in a reset of start time.
 
         """
-        print >> file, "%s (%s s)" % (msg, time.time() - self.start)
+        print("%s (%s s)" % (msg, time.time() - self.start), file=file)
         if do_reset:
             self.start = time.time()
 

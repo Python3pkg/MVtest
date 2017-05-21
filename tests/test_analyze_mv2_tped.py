@@ -18,7 +18,7 @@ import unittest
 import libgwas.standardizer
 from meanvar.mvstandardizer import Standardizer
 from meanvar import mv_esteq
-import test_analyze_tped
+from . import test_analyze_tped
 
 # We aren't testing the actual application. Just the analysis portion
 class TestMv2AnalysisTPed(test_analyze_tped.TestBase):

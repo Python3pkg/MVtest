@@ -57,7 +57,7 @@ def generate_jobs(args, job_list, argument_string):
     scriptpath = os.path.abspath(args.script_path)
     pwd = os.path.abspath(os.getcwd())
 
-    for jobname in job_list.keys():
+    for jobname in list(job_list.keys()):
         filename = "%s/%s.sh" % (scriptpath, jobname)
         job_body = mvtest_path + " " + argument_string + " " + job_list[jobname]
         contents = Template(template).safe_substitute(
@@ -70,7 +70,7 @@ def generate_jobs(args, job_list, argument_string):
                     pwd=pwd)
 
         file = open(filename, "w")
-        print >> file,contents
+        print(contents, file=file)
 def mkdir(dirname):
     """Dumb function to avoid executions if directory exists"""
     try:
@@ -90,7 +90,7 @@ def get_template_file(args):
             template_filename = open(template_filename, "r")
         except:
             with open(template_filename, "w") as file:
-                print >> file, """#SBATCH --job-name=$jobname
+                print("""#SBATCH --job-name=$jobname
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=1
@@ -102,10 +102,10 @@ def get_template_file(args):
 cd $pwd
 
 $body
-    """
-            print >> sys.stderr, """PLEASE NOTE: \n
+    """, file=file)
+            print("""PLEASE NOTE: \n
 A default template file, %s, has been created. You are encouraged to configure it according to work with your cluster
-management software or personalize it with email notifications, etc.\n"""
+management software or personalize it with email notifications, etc.\n""", file=sys.stderr)
             template_filename = open(template_filename, "r")
 
     return template_filename
@@ -176,7 +176,7 @@ def split_impute_jobs(args, filename):
         job_string = "--impute-offset %d --impute-count %d" % (job_idx, impute_count)
         job_name = "job%04d-%s" % (job_num+1, gen_files[job_idx -1])
         job_list[job_name] = job_string
-        print job_string
+        print(job_string)
 
     return job_list
 
@@ -388,7 +388,7 @@ walltime that is long enough to allow the largest run to complete.
 
     # Report version, if requested, and exit
     if args.v:
-        print >> sys.stderr, "%s: %s" % (os.path.basename(__file__), __version__)
+        print("%s: %s" % (os.path.basename(__file__), __version__), file=sys.stderr)
         sys.exit(0)
     mkdir(args.script_path)
     mkdir(args.res_path)
@@ -446,7 +446,7 @@ walltime that is long enough to allow the largest run to complete.
 
     if job_list is None or len(job_list) == 0:
         parser.print_usage(sys.stderr)
-        print >> sys.stderr, "\nThere were not jobs created. Did you specify the necessary data?"
+        print("\nThere were not jobs created. Did you specify the necessary data?", file=sys.stderr)
     else:
         generate_jobs(args, job_list, " ".join(general_arguments))
     sys.exit(0)
